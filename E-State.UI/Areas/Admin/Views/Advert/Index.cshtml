@@ -70,7 +70,7 @@ else
                         url: "/Admin/Advert/Delete/" + id,
                         success: function () {
                             toastr.error("İlan silme işlemi başarıyla gerçekleşti.");
-                            row.remove(); // Değişiklik burada
+                            row.remove();
                         },
                         error: function () {
                             toastr.error("İlan silme işlemi sırasında bir hata oluştu.");
