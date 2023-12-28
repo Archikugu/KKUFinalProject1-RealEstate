@@ -46,7 +46,9 @@ namespace E_State.Business.Concrete
 
         public void Update(Images item)
         {
-            _imagesRepository.Update(item);
+            var update = _imagesRepository.GetById(item.ImageId);
+            update.ImageName = item.Image.FileName;
+            _imagesRepository.Update(update);
         }
     }
 }

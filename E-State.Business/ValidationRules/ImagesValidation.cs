@@ -7,8 +7,7 @@ namespace E_State.Business.ValidationRules
     {
         public ImagesValidation()
         {
-            RuleFor(x => x.ImageName).NotEmpty().WithMessage("Resim alanı boş bırakılamaz");
-            RuleFor(x => x.AdvertId).NotEmpty().WithMessage("İlan alanı boş bırakılamaz");
+            RuleFor(x => x.Image).NotEmpty().WithMessage("Resim alanı boş bırakılamaz");
         }
     }
 }

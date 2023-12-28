@@ -1,0 +1,25 @@
+﻿@model Advert
+@{
+    ViewData["Title"] = "ImageCreate";
+}
+
+<h1>Resim Ekleme Sayfası</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <form method="post" asp-action="ImageCreate" enctype="multipart/form-data" asp-antiforgery="true">
+                        <input type="hidden" asp-for="AdvertId" />
+
+                        <input type="file" asp-for="Image" multiple />
+                        <br />
+                        <br />
+                        <button type="submit" class="btn btn-outline-primary">Resimleri Ekle</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

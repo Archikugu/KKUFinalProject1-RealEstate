@@ -24,6 +24,7 @@ else
             <th>Kat</th>
             <th>Adres</th>
             <th>İlan Resimleri</th>
+            <th>Resim Ekle</th>
             <th>Sil</th>
             <th>Güncelle</th>
         </tr>
@@ -38,9 +39,10 @@ else
                     <td>@item.Area</td>
                     <td>@item.Floor</td>
                     <td>@item.Address</td>
-                    <td><a class="btn btn-success" asp-action="AdvertImages" asp-route-id="@item.AdvertId">İlan Resimleri</a></td>
+                    <td><a class="btn btn-success" asp-action="ImageList" asp-route-id="@item.AdvertId">İlan Resimleri</a></td>
+                    <td><a class="btn btn-info" asp-action="ImageCreate" asp-route-id="@item.AdvertId">Resim Ekle</a></td>
                     <td><a class="btn btn-danger" data-id="@item.AdvertId" id="delete-@item.AdvertId">Sil</a></td>
-                    <td><a class="btn btn-primary" asp-action="Update" asp-route-id="@item.AdvertId">Güncelle</a></td>
+                    <td><a class="btn btn-warning" asp-action="Update" asp-route-id="@item.AdvertId">Güncelle</a></td>
 
                 </tr>
             }

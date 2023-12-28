@@ -19,10 +19,11 @@ namespace E_State.UI.Areas.Admin.Controllers
         INeighbourhoodService _neighbourhoodService;
         ISituationService _situationService;
         ITypeService _typeService;
+        IImagesService _imagesService;
 
         IWebHostEnvironment hostEnvironment;
 
-        public AdvertController(IAdvertService advertService, ICityService cityService, IDistrictService districtService, INeighbourhoodService neighbourhoodService, ISituationService situationService, ITypeService typeService, IWebHostEnvironment hostEnvironment)
+        public AdvertController(IAdvertService advertService, ICityService cityService, IDistrictService districtService, INeighbourhoodService neighbourhoodService, ISituationService situationService, ITypeService typeService, IWebHostEnvironment hostEnvironment, IImagesService imagesService)
         {
             _advertService = advertService;
             _cityService = cityService;
@@ -30,6 +31,7 @@ namespace E_State.UI.Areas.Admin.Controllers
             _neighbourhoodService = neighbourhoodService;
             _situationService = situationService;
             _typeService = typeService;
+            _imagesService = imagesService;
             this.hostEnvironment = hostEnvironment;
         }
 
@@ -39,6 +41,97 @@ namespace E_State.UI.Areas.Admin.Controllers
 
             var list = _advertService.List(x => x.Status == true && x.UserAdminId == id);
             return View(list);
+        }
+
+        public IActionResult ImageList(int id)
+        {
+            var list = _imagesService.List(x => x.Status == true && x.AdvertId == id);
+            return View(list);
+        }
+
+        [HttpGet]
+        public IActionResult ImageCreate(int id)
+        {
+            var advert = _advertService.GetById(id);
+            return View(advert);
+        }
+        [HttpPost]
+        public IActionResult ImageCreate(Advert data)
+        {
+            var advert = _advertService.GetById(data.AdvertId);
+
+            if (data.Image != null)
+            {
+                var dosyayolu = Path.Combine(hostEnvironment.WebRootPath, "img");
+
+                foreach (var item in data.Image)
+                {
+                    var tamDosyaAdi = Path.Combine(dosyayolu, item.FileName);
+
+                    using (var dosyaAkisi = new FileStream(tamDosyaAdi, FileMode.Create))
+                    {
+                        item.CopyTo(dosyaAkisi);
+                    }
+                    _imagesService.Add(new Images { ImageName = item.FileName, Status = true, AdvertId = advert.AdvertId });
+                }
+
+
+                TempData["Success"] = "İlan Resim Ekleme İşlemi Başarı ile Gerçekleşti";
+                return RedirectToAction("Index");
+            }
+
+
+            return View(advert);
+        }
+
+
+        public IActionResult ImageDelete(int id)
+        {
+            var delete = _imagesService.GetById(id);
+            _imagesService.Delete(delete);
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public IActionResult ImageUpdate(int id)
+        {
+            var image = _imagesService.GetById(id);
+            return View(image);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ImageUpdate(Images data)
+        {
+
+            ImagesValidation validationRules = new ImagesValidation();
+            ValidationResult result = validationRules.Validate(data);
+
+            if (result.IsValid)
+            {
+                if (data.Image != null)
+                {
+                    var dosyayolu = Path.Combine(hostEnvironment.WebRootPath, "img");
+
+                    var tamDosyaAdi = Path.Combine(dosyayolu, data.Image.FileName);
+
+                    using (var dosyaAkisi = new FileStream(tamDosyaAdi, FileMode.Create))
+                    {
+                        data.Image.CopyTo(dosyaAkisi);
+                    }
+                    _imagesService.Update(data);
+
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+                }
+            }
+
+            return View();
         }
 
         public IActionResult DeleteList()
