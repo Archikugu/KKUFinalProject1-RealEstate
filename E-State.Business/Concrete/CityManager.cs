@@ -1,5 +1,6 @@
 ﻿using E_State.Business.Abstract;
 using E_State.DataAccess.Abstract;
+using E_State.DataAccess.Concrete;
 using E_State.Entities.Entities;
 using System;
 using System.Collections.Generic;
@@ -21,12 +22,27 @@ namespace E_State.Business.Concrete
 
         public void Add(City item)
         {
+            item.Status = true;
             _cityRepository.Add(item);
         }
 
         public void Delete(City item)
         {
-            _cityRepository.Delete(item);
+            var deleteCity = _cityRepository.GetById(item.CityId);
+            deleteCity.Status = false;
+            _cityRepository.Update(deleteCity);
+        }
+
+        public void FullDelete(City item)
+        {
+            var delete = _cityRepository.GetById(item.CityId);
+            _cityRepository.FullDelete(delete);
+        }
+
+        public void GetActive(City item)
+        {
+            var active = _cityRepository.GetById(item.CityId);
+            _cityRepository.GetActive(active);
         }
 
         public City GetById(int id)
@@ -46,7 +62,9 @@ namespace E_State.Business.Concrete
 
         public void Update(City item)
         {
-            _cityRepository.Update(item);
+            var city = _cityRepository.GetById(item.CityId);
+            city.CityName = item.CityName;
+            _cityRepository.Update(city);
         }
     }
 }

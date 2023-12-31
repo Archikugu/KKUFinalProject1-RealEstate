@@ -11,5 +11,24 @@ namespace E_State.DataAccess.Concrete
         {
             this.context = context;
         }
+
+        public void FullDelete(City item)
+        {
+            var city = context.Cities.Find(item.CityId);
+            context.Cities.Remove(city);
+            context.SaveChanges();
+        }
+
+        public void GetActive(City item)
+        {
+            var city = context.Cities.Find(item.CityId);
+
+            if (city.Status == false)
+            {
+                city.Status = true;
+                context.Cities.Update(city);
+                context.SaveChanges();
+            }
+        }
     }
 }

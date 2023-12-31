@@ -1,0 +1,24 @@
+﻿@model City
+@{
+    ViewData["Title"] = "Create";
+}
+<h2>Şehir Ekleme Sayfası</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <form method="post" asp-antiforgery="true">
+                        <label>Şehir Adı</label>
+                        <input type="text" asp-for="CityName" />
+                        <span asp-validation-for="CityName" class="text-danger"></span>
+                        <br />
+                        <button type="submit" class="btn btn-success">Şehir Ekle</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
