@@ -3,26 +3,24 @@
     ViewData["Title"] = "ImageUpdate";
 }
 
-<h1>Resim Güncelleme Sayfası</h1>
+<h1 class="text-center">Resim Güncelleme Sayfası</h1>
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="col-md-4">
+    <div class="row justify-content-left">
+        <div class="col-md-8">
+            <form method="post" asp-action="ImageUpdate" enctype="multipart/form-data" asp-antiforgery="true">
                 <div class="form-group">
-                    <form method="post" asp-action="ImageUpdate" enctype="multipart/form-data" asp-antiforgery="true">
-                        <div>
-                            <input asp-for="ImageId" hidden />
-                            <input type="hidden" asp-for="AdvertId" />
+                    <input asp-for="ImageId" hidden />
+                    <input type="hidden" asp-for="AdvertId" />
 
-                            <input type="file" asp-for="Image" multiple />
-                            <br />
-                            <br />
-                            <button type="submit" class="btn btn-outline-warning">Resimleri Güncelle</button>
-                        </div>
-                    </form>
+                    <label for="Image" class="font-weight-bold">Resim Seç</label>
+                    <input type="file" id="Image" name="Image" class="form-control-file" multiple />
+
+                    <div class="mt-3">
+                        <button type="submit" class="btn btn-warning">Resimleri Güncelle</button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>

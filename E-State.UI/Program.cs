@@ -80,6 +80,9 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseStatusCodePagesWithReExecute("/ErrorPage/ErrorPage", "?code={0}");
+
+
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
