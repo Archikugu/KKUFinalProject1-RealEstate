@@ -1,0 +1,39 @@
+﻿@model District
+
+@{
+    ViewData["Title"] = "Update";
+}
+
+<h2>Semt Güncelleme Sayfası</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <form method="post" asp-antiforgery="true">
+
+                        <label>Semt Adı</label>
+                        <input type="hidden" asp-for="DistrictId" />
+                        <input type="text" asp-for="DistrictName" />
+                        <span asp-validation-for="DistrictName" class="text-danger"></span>
+                        <br />
+
+                        <label>Şehir</label>
+                        <select asp-for="City.CityId"  class="form-control">
+                            <option value="0" selected>Şeçiniz</option>
+                            @foreach (var item in ViewBag.cities)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+
+                        <br />
+                        <button type="submit" class="btn btn-warning">Semt Güncelle</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+﻿@model District
+@{
+    ViewData["Title"] = "Create";
+}
+<h2>Semt Ekleme Sayfası</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <form method="post" asp-antiforgery="true">
+
+                        <label>Semt Adı</label>
+                        <input type="text" asp-for="DistrictName" />
+                        <span asp-validation-for="DistrictName" class="text-danger"></span>
+                        <br />
+
+                        <label>Şehir</label>
+                        <select asp-for="CityKey" id="CityKey" class="form-control">
+                            <option value="0" selected>Şeçiniz</option>
+                            @foreach (var item in ViewBag.cities)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+
+                        <br />
+                        <button type="submit" class="btn btn-success">Semt Ekle</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

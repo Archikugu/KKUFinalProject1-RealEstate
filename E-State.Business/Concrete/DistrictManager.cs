@@ -1,5 +1,6 @@
 ﻿using E_State.Business.Abstract;
 using E_State.DataAccess.Abstract;
+using E_State.DataAccess.Concrete;
 using E_State.Entities.Entities;
 using System;
 using System.Collections.Generic;
@@ -21,12 +22,28 @@ namespace E_State.Business.Concrete
 
         public void Add(District item)
         {
+
+            item.Status = true;
             _districtRepository.Add(item);
         }
 
         public void Delete(District item)
         {
-            _districtRepository.Delete(item);
+            var delete = _districtRepository.GetById(item.DistrictId);
+            delete.Status = false;
+            _districtRepository.Update(delete);
+        }
+
+        public void FullDelete(District item)
+        {
+            var delete = _districtRepository.GetById(item.DistrictId);
+            _districtRepository.FullDelete(delete);
+        }
+
+        public void GetActive(District item)
+        {
+            var active = _districtRepository.GetById(item.DistrictId);
+            _districtRepository.GetActive(active);
         }
 
         public District GetById(int id)
@@ -46,6 +63,10 @@ namespace E_State.Business.Concrete
 
         public void Update(District item)
         {
+            var district = _districtRepository.GetById(item.DistrictId);
+            district.DistrictName = item.DistrictName;
+            district.City.CityId = item.CityKey;
+
             _districtRepository.Update(item);
         }
     }
