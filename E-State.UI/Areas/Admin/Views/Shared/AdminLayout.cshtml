@@ -172,8 +172,8 @@
                 </a>
                 <div id="situations" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="login.html">Aktif İlan Durumları</a>
-                        <a class="collapse-item" href="register.html">Pasif İlan Durumları</a>
+                        <a class="collapse-item" asp-area="Admin" asp-controller="Status" asp-action="Index">Aktif İlan Durumları</a>
+                        <a class="collapse-item" asp-area="Admin" asp-controller="Status" asp-action="DeleteSituationList">Pasif İlan Durumları</a>
                     </div>
                 </div>
             </li>
@@ -189,8 +189,8 @@
                 </a>
                 <div id="type" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="login.html">Aktif İlan Tipleri</a>
-                        <a class="collapse-item" href="register.html">Pasif İlan Tipleri</a>
+                        <a class="collapse-item" asp-area="Admin" asp-controller="Type" asp-action="Index">Aktif İlan Tipleri</a>
+                        <a class="collapse-item" asp-area="Admin" asp-controller="Type" asp-action="DeleteTypeList">Pasif İlan Tipleri</a>
                     </div>
                 </div>
             </li>

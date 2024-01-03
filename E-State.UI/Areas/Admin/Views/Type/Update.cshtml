@@ -1,0 +1,36 @@
+﻿@model E_State.Entities.Entities.Type
+@{
+    ViewData["Title"] = "Update";
+}
+<h2>İlan Tipi Güncelleme Sayfası</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <form method="post" asp-antiforgery="true">
+                        <input type="hidden" asp-for="TypeId" />
+                        <label>İlan Tipi</label>
+                        <input type="text" asp-for="TypeName" />
+                        <span asp-validation-for="TypeName" class="text-danger"></span>
+                        <br />
+
+                        <label>İlan Durumu</label>
+                        <select asp-for="SituationId" id="SituationId" class="form-control">
+                            <option value="0" selected>Seçiniz</option>
+                            @foreach (var item in ViewBag.status)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+
+                        <br />
+                        <button type="submit" class="btn btn-warning">İlan Tipi Güncelle</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

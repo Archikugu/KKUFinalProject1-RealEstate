@@ -11,5 +11,24 @@ namespace E_State.DataAccess.Concrete
         {
             this.context = context;
         }
+
+        public void FullDelete(Situation item)
+        {
+            var situation = context.Situations.Find(item.SituationId);
+            context.Situations.Remove(situation);
+            context.SaveChanges();
+        }
+
+        public void GetActive(Situation item)
+        {
+            var situation = context.Situations.Find(item.SituationId);
+
+            if (situation.Status == false)
+            {
+                situation.Status = true;
+                context.Situations.Update(situation);
+                context.SaveChanges();
+            }
+        }
     }
 }

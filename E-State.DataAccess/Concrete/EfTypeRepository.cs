@@ -10,6 +10,25 @@ namespace E_State.DataAccess.Concrete
         {
             this.context = context;
         }
+
+        public void FullDelete(Entities.Entities.Type item)
+        {
+            var type = context.Types.Find(item.TypeId);
+            context.Types.Remove(type);
+            context.SaveChanges();
+        }
+
+        public void GetActive(Entities.Entities.Type item)
+        {
+            var type = context.Types.Find(item.TypeId);
+
+            if (type.Status == false)
+            {
+                type.Status = true;
+                context.Types.Update(type);
+                context.SaveChanges();
+            }
+        }
     }
 
 }

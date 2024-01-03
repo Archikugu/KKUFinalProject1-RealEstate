@@ -1,0 +1,37 @@
+﻿@model E_State.Entities.Entities.Type
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>ilan Tipi Ekleme Sayfası</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <form method="post" asp-antiforgery="true">
+
+                        <label>İlan Tipi</label>
+                        <input type="text" asp-for="TypeName" />
+                        <span asp-validation-for="TypeName" class="text-danger"></span>
+                        <br />
+
+                        <label>İlan Durumu</label>
+                        <select asp-for="SituationId" id="SituationId" class="form-control">
+                            <option value="0" selected>Şeçiniz</option>
+                            @foreach (var item in ViewBag.status)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+
+                        <br />
+                        <button type="submit" class="btn btn-success">İlan Tipi Ekle</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

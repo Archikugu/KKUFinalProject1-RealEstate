@@ -1,5 +1,6 @@
 ﻿using E_State.Business.Abstract;
 using E_State.DataAccess.Abstract;
+using E_State.DataAccess.Concrete;
 using E_State.Entities.Entities;
 using System;
 using System.Collections.Generic;
@@ -21,12 +22,27 @@ namespace E_State.Business.Concrete
 
         public void Add(Situation item)
         {
+            item.Status = true;
             _situationRepository.Add(item);
         }
 
         public void Delete(Situation item)
         {
-            _situationRepository.Delete(item);
+            var status = _situationRepository.GetById(item.SituationId);
+            status.Status = false;
+            _situationRepository.Update(status);
+        }
+
+        public void FullDelete(Situation item)
+        {
+            var delete = _situationRepository.GetById(item.SituationId);
+            _situationRepository.FullDelete(delete);
+        }
+
+        public void GetActive(Situation item)
+        {
+            var active = _situationRepository.GetById(item.SituationId);
+            _situationRepository.GetActive(active);
         }
 
         public Situation GetById(int id)
@@ -46,7 +62,9 @@ namespace E_State.Business.Concrete
 
         public void Update(Situation item)
         {
-            _situationRepository.Update(item);
+            var status = _situationRepository.GetById(item.SituationId);
+            status.SituationName = item.SituationName;
+            _situationRepository.Update(status);
         }
     }
 }

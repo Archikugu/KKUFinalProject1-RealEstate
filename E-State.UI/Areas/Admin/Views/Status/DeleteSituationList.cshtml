@@ -1,0 +1,72 @@
+﻿@model List<Situation>
+@{
+    ViewData["Title"] = "DeleteSituationList";
+}
+
+@if (Model.Count == 0)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="alert alert-success">Sitede herhangi bir şehir bulunamamaktadır.</div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <table class="table table-bordered table table-striped">
+        <tr>
+            <th>Durum Adı</th>
+            <th>Sil</th>
+            <th>Aktif Yap</th>
+        </tr>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.SituationName</td>
+                    <td><a class="btn btn-danger" data-id="@item.SituationId" id="delete-@item.SituationId">Sil</a></td>
+                    <td><a class="btn btn-primary" asp-action="GetActiveSituation" asp-route-id="@item.SituationId">Aktif Yap</a></td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<br />
+<a class="btn btn-primary" asp-action="Create">Durum Ekle</a>
+<br />
+<br />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("a[id^='delete-']").click(function () {
+            var id = $(this).data("id");
+            var row = $(this).closest("tr");
+
+            swal({
+                title: "Durum Pasif Olacak İstiyor musunuz ?",
+                text: "Durumu Pasif Yapmak istediğinize emin misiniz!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            type: "GET",
+                            url: "/Admin/Status/FullDelete/" + id,
+                            success: function () {
+                                toastr.error("Durum pasif etme işlemi başarıyla gerçekleşti.");
+                                row.remove();
+                            },
+                            error: function () {
+                                toastr.error("Durum pasif etme işlemi sırasında bir hata oluştu.");
+                            }
+                        });
+                    }
+                });
+        });
+    });
+</script>
