@@ -1,5 +1,6 @@
 ﻿using E_State.Business.Abstract;
 using E_State.DataAccess.Abstract;
+using E_State.DataAccess.Concrete;
 using E_State.Entities.Entities;
 using System;
 using System.Collections.Generic;
@@ -21,12 +22,27 @@ namespace E_State.Business.Concrete
 
         public void Add(Neighbourhood item)
         {
+            item.Status = true;
             _neighbourhoodRepository.Add(item);
         }
 
         public void Delete(Neighbourhood item)
         {
-            _neighbourhoodRepository.Delete(item);
+            var neigh = _neighbourhoodRepository.GetById(item.NeighbourhoodId);
+            neigh.Status = false;
+            _neighbourhoodRepository.Update(item);
+        }
+
+        public void FullDelete(Neighbourhood item)
+        {
+            var delete = _neighbourhoodRepository.GetById(item.NeighbourhoodId);
+            _neighbourhoodRepository.FullDelete(delete);
+        }
+
+        public void GetActive(Neighbourhood item)
+        {
+            var active = _neighbourhoodRepository.GetById(item.NeighbourhoodId);
+            _neighbourhoodRepository.GetActive(active);
         }
 
         public Neighbourhood GetById(int id)
@@ -47,7 +63,11 @@ namespace E_State.Business.Concrete
 
         public void Update(Neighbourhood item)
         {
-            _neighbourhoodRepository.Update(item);
+            var neigh = _neighbourhoodRepository.GetById(item.NeighbourhoodId);
+            neigh.NeighbourhoodName = item.NeighbourhoodName;
+            neigh.DistrictKey = item.DistrictKey;
+
+            _neighbourhoodRepository.Update(neigh);
         }
     }
 }

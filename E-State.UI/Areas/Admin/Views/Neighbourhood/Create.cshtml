@@ -1,0 +1,37 @@
+﻿@model Neighbourhood
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Mahalle Ekleme Sayfası</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <form method="post" asp-antiforgery="true">
+
+                        <label>Mahalle Adı</label>
+                        <input type="text" asp-for="NeighbourhoodName" />
+                        <span asp-validation-for="NeighbourhoodName" class="text-danger"></span>
+                        <br />
+
+                        <label>Semt Adı</label>
+                        <select asp-for="DistrictKey" id="DistrictId" class="form-control">
+                            <option value="0" selected>Şeçiniz</option>
+                            @foreach (var item in ViewBag.district)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+
+                        <br />
+                        <button type="submit" class="btn btn-success">Mahalle Ekle</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

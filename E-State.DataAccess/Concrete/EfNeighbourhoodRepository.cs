@@ -11,5 +11,24 @@ namespace E_State.DataAccess.Concrete
         {
             this.context = context;
         }
+
+        public void FullDelete(Neighbourhood item)
+        {
+            var neigh = context.Neighbourhoods.Find(item.NeighbourhoodId);
+            context.Neighbourhoods.Remove(neigh);
+            context.SaveChanges();
+        }
+
+        public void GetActive(Neighbourhood item)
+        {
+            var neigh = context.Neighbourhoods.Find(item.NeighbourhoodId);
+
+            if (neigh.Status == false)
+            {
+                neigh.Status = true;
+                context.Neighbourhoods.Update(neigh);
+                context.SaveChanges();
+            }
+        }
     }
 }

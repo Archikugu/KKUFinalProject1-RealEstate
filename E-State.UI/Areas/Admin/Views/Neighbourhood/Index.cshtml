@@ -1,17 +1,16 @@
 ﻿@using X.PagedList
 @using X.PagedList.Mvc.Core
-@model IPagedList<District>
-
+@model IEnumerable<Neighbourhood>
 @{
     ViewData["Title"] = "Index";
 }
 
-@if (Model.Count == 0)
+@if (!Model.Any())
 {
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <div class="alert alert-success">Sitede herhangi bir semt bulunamamaktadır.</div>
+                <div class="alert alert-success">Sitede herhangi bir mahalle bulunamamaktadır.</div>
             </div>
         </div>
     </div>
@@ -21,7 +20,7 @@ else
     <table class="table table-bordered table table-striped">
         <tr>
             <th>ID</th>
-            <th>Semt Adı</th>
+            <th>Mahalle Adı</th>
             <th>Pasif Yap</th>
             <th>Güncelle</th>
         </tr>
@@ -29,10 +28,10 @@ else
             @foreach (var item in Model)
             {
                 <tr>
-                    <th>@item.DistrictId</th>
-                    <td>@item.DistrictName</td>
-                    <td><a class="btn btn-primary" data-id="@item.DistrictId" id="delete-@item.DistrictId">Pasif Yap</a></td>
-                    <td><a class="btn btn-warning" asp-action="Update" asp-route-id="@item.DistrictId">Güncelle</a></td>
+                    <th>@item.NeighbourhoodId</th>
+                    <td>@item.NeighbourhoodName</td>
+                    <td><a class="btn btn-primary" data-id="@item.NeighbourhoodId" id="delete-@item.NeighbourhoodId">Pasif Yap</a></td>
+                    <td><a class="btn btn-warning" asp-action="Update" asp-route-id="@item.NeighbourhoodId">Güncelle</a></td>
 
                 </tr>
             }
@@ -55,8 +54,8 @@ else
             var row = $(this).closest("tr");
 
             swal({
-                title: "Semti Pasif Yapmak İstiyor musunuz ?",
-                text: "Semt Pasif Olacak istediğinize emin misiniz!",
+                title: "Mahalleyi Pasif Yapmak İstiyor musunuz ?",
+                text: "Mahalle Pasif Olacak istediğinize emin misiniz!",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
@@ -67,11 +66,11 @@ else
                             type: "GET",
                             url: "/Admin/Neighbourhood/Delete/" + id,
                             success: function () {
-                                toastr.error("Semt pasif etme işlemi başarıyla gerçekleşti.");
+                                toastr.error("Mahalleyi pasif etme işlemi başarıyla gerçekleşti.");
                                 row.remove();
                             },
                             error: function () {
-                                toastr.error("Semt pasif etme işlemi sırasında bir hata oluştu.");
+                                toastr.error("Mahalleyi pasif etme işlemi sırasında bir hata oluştu.");
                             }
                         });
                     }
@@ -79,5 +78,3 @@ else
         });
     });
 </script>
-
-
