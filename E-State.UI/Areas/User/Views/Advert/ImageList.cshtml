@@ -1,0 +1,86 @@
+﻿@model List<Images>
+@{
+    ViewData["Title"] = "ImageList";
+}
+
+<div class="cards-list">
+    @foreach (var item in Model)
+    {
+        <div class="card">
+            <div class="card_image">
+                <img src="~/img/@item.ImageName" />
+                <div class="overlay">
+                    <a asp-action="ImageUpdate" asp-route-id="@item.ImageId" class="btn btn-warning btn-sm mb-2" style="font-size: 1.5rem;">Güncelle</a>
+                    <span style="margin: 5px;"></span>
+                    <a asp-action="ImageDelete" asp-route-id="@item.ImageId" class="btn btn-danger btn-sm" style="font-size: 1.5rem;" onclick="return confirm('Silmek istediğinize emin misiniz ?')">Sil</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .cards-list {
+        z-index: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    .card {
+        margin: 30px auto;
+        width: 300px;
+        height: 300px;
+        border-radius: 40px;
+        box-shadow: 5px 5px 30px 7px rgba(0, 0, 0, 0.25), -5px -5px 30px 7px rgba(0, 0, 0, 0.22);
+        cursor: pointer;
+        transition: 0.4s;
+        position: relative;
+    }
+
+        .card .card_image {
+            width: inherit;
+            height: inherit;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+        }
+
+            .card .card_image img {
+                width: inherit;
+                height: inherit;
+                border-radius: 40px;
+                object-fit: cover;
+            }
+
+    .overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+        width: 100%;
+        height: 0;
+        transition: .5s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .overlay a {
+            text-decoration: none;
+            color: white;
+        }
+
+    .card:hover .overlay {
+        height: 100%;
+    }
+
+    .card:hover {
+        transform: scale(0.9, 0.9);
+        box-shadow: 5px 5px 30px 15px rgba(0, 0, 0, 0.25), -5px -5px 30px 15px rgba(0, 0, 0, 0.22);
+    }
+</style>
