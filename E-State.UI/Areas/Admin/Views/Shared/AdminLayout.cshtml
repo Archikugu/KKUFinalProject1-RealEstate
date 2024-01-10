@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Custom styles for this template-->
     <link href="~/Admin/css/sb-admin-2.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <script src="~/Admin/vendor/jquery/jquery.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -107,8 +108,8 @@
                 <div id="advertAll" class="collapse" aria-labelledby="headingUtilities"
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="utilities-color.html">Aktif İlanlar</a>
-                        <a class="collapse-item" href="utilities-border.html">Silinen İlanlar</a>
+                        <a class="collapse-item" asp-area="Admin" asp-controller="Advert" asp-action="AdvertAll">Aktif İlanlar</a>
+                        <a class="collapse-item" asp-area="Admin" asp-controller="Advert" asp-action="DeleteListAll">Silinen İlanlar</a>
                     </div>
                 </div>
             </li>
@@ -383,6 +384,7 @@
     <!-- Page level custom scripts -->
     <script src="~/Admin/js/demo/chart-area-demo.js"></script>
     <script src="~/Admin/js/demo/chart-pie-demo.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
 </body>
 
