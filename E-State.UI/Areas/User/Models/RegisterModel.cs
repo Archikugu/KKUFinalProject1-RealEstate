@@ -17,7 +17,7 @@ namespace E_State.UI.Areas.User.Models
         public string RePassword { get; set; }
 
         [Required(ErrorMessage = "Kullanıcı Adı Alanı Boş Geçilemez")]
-        public string Username { get; set; }
+        public string UserName { get; set; }
 
         [Required(ErrorMessage = "İsim Alanı Boş Geçilemez")]
         public string FullName { get; set; }

@@ -1,5 +1,6 @@
 ﻿using E_State.Entities.Entities;
 using E_State.UI.Areas.User.Models;
+using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,140 @@ namespace E_State.UI.Areas.User.Controllers
         {
             return View();
         }
+        public IActionResult Profile()
+        {
+            var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
+            RegisterModel userViewModel = user.Adapt<RegisterModel>();
+            return View(userViewModel);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Profile(RegisterModel model)
+        {
+            ModelState.Remove("Password");
+            ModelState.Remove("RePassword");
+            if (ModelState.IsValid)
+            {
+                UserAdmin user = await _userManager.FindByNameAsync(User.Identity.Name);
+                user.FullName = model.FullName;
+                user.UserName = model.UserName;
+                user.Email = model.Email;
+
+                IdentityResult result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    await _userManager.UpdateSecurityStampAsync(user);
+                    await _signInManager.SignOutAsync();
+                    await _signInManager.SignInAsync(user, true);
+
+                    ViewBag.success = "Kullanıcı Bilgileri Başarıyla Güncellendi";
+                }
+                else
+                {
+                    foreach (var item in result.Errors)
+                    {
+                        ModelState.AddModelError("", item.Description);
+                    }
+                }
+            }
+            return View();
+        }
+
+
+        public IActionResult ResetPassword()
+        {
+            return View(new ResetPasswordModel());
+        }
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+        {
+            UserAdmin user = await _userManager.FindByEmailAsync(model.Email);
+            if (user != null)
+            {
+                string resettoken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                string passwordresetLink = Url.Action("UpdatePassword", "User", new { userId = user.Id, token = resettoken }, HttpContext.Request.Scheme);
+
+                MailHelper.ResetPassword.PasswordSendMail(passwordresetLink, model.Email);
+
+                ViewBag.state = true;
+            }
+            else
+            {
+                ViewBag.state = false;
+
+            }
+            return View(model);
+        }
+
+        public IActionResult UpdatePassword(string userId, string token)
+        {
+            TempData["userid"] = userId;
+            TempData["token"] = token;
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdatePassword([Bind("NewPassword")] ResetPasswordModel model)
+        {
+            string token = TempData["token"].ToString();
+            string userid = TempData["userid"].ToString();
+
+            UserAdmin user = await _userManager.FindByIdAsync(userid);
+            if (user != null)
+            {
+                IdentityResult result = await _userManager.ResetPasswordAsync(user, token, model.NewPassword);
+                if (result.Succeeded)
+                {
+                    await _userManager.UpdateSecurityStampAsync(user);
+                    TempData["Success"] = "Şifre Başarıyla Güncellenmiştir";
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Böyle Bir Kullanıcı Bulunamadı");
+            }
+            return View();
+        }
+
+        public IActionResult ChangePassword()
+        {
+            return View(new ChangePasswordModel());
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                UserAdmin user = await _userManager.FindByNameAsync(User.Identity.Name);
+                bool exist = await _userManager.CheckPasswordAsync(user, model.OldPassword);
+                if (exist)
+                {
+                    IdentityResult result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+                    if (result.Succeeded)
+                    {
+                        await _userManager.UpdateSecurityStampAsync(user);
+                        await _signInManager.SignOutAsync();
+                        await _signInManager.PasswordSignInAsync(user, model.NewPassword, true, true);
+
+                        ViewBag.success = "Kullanıcı Şifresi Başarıyla Güncellendi";
+                    }
+                    else
+                    {
+                        foreach (var item in result.Errors)
+                        {
+                            ModelState.AddModelError("", item.Description);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Bir Hata Oluştu");
+            }
+            return View();
+        }
+
         public IActionResult Login()
         {
             return View(new LoginModel());
@@ -86,7 +221,7 @@ namespace E_State.UI.Areas.User.Controllers
             }
             UserAdmin user = new UserAdmin()
             {
-                UserName = model.Username,
+                UserName = model.UserName,
                 Email = model.Email,
                 FullName = model.FullName,
 
