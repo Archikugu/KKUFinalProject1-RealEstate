@@ -198,11 +198,18 @@
 
             <hr class="sidebar-divider my-0">
 
-            <li class="nav-item active">
-                <a class="nav-link" asp-controller="AdminUserManagment" asp-action="Index">
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#adminusermanagement"
+                   aria-expanded="true" aria-controls="collapsePages">
                     <img width="50" height="50" src="https://img.icons8.com/color/50/connected-people.png" alt="connected-people" />
                     <span>Kullanıcı Yönetimi</span>
                 </a>
+                <div id="adminusermanagement" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" asp-area="Admin" asp-controller="AdminUserManagement" asp-action="Index">Aktif Kullanıcılar</a>
+                        <a class="collapse-item" asp-area="Admin" asp-controller="AdminUserManagement" asp-action="DeleteUserList">Engellenen Kullanıcılar</a>
+                    </div>
+                </div>
             </li>
 
             <hr class="sidebar-divider my-0">

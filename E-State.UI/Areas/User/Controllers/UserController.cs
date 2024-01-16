@@ -224,6 +224,7 @@ namespace E_State.UI.Areas.User.Controllers
                 UserName = model.UserName,
                 Email = model.Email,
                 FullName = model.FullName,
+                Status = true
 
             };
             IdentityRole role = new IdentityRole()

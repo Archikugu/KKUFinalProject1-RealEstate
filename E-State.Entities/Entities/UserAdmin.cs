@@ -10,6 +10,7 @@ namespace E_State.Entities.Entities
     public class UserAdmin : IdentityUser
     {
         public string FullName { get; set; }
+        public bool Status { get; set; }
         public virtual List<Advert> Adverts { get; set; }
     }
 }

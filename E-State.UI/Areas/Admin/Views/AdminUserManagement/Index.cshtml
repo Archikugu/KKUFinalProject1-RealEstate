@@ -1,0 +1,64 @@
+﻿@model List<UserAdmin>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<table class="table table-bordered table table-striped">
+    <tr>
+        <th>Adı-Soyadı</th>
+        <th>Kullanıcı Adı</th>
+        <th>Email</th>
+        <th>Rol Ata</th>
+        <th>Engelle</th>
+    </tr>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th>@item.FullName</th>
+                <td>@item.UserName</td>
+                <td>@item.Email</td>
+                <td><a class="btn btn-primary" asp-action="RoleAssign" asp-route-id="@item.Id">Rol Ata</a></td>
+                <td><a class="btn btn-danger" data-id="@item.Id" id="delete-">Engelle</a></td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br />
+<a class="btn btn-primary" asp-action="Create">Kullanıcı Ekle</a>
+<br />
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("a[id^='delete-']").click(function () {
+            var id = $(this).data("id");
+            var row = $(this).closest("tr");
+
+            swal({
+                title: "Kullanıcı Engellecenek Bunnu Yapmak İstiyor musunuz ?",
+                text: "Kullanıcıyı Engellemek  istediğinize emin misiniz!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            type: "GET",
+                            url: "/Admin/AdminUserManagement/UserDelete/" + id,
+                            success: function () {
+                                toastr.error("Kullanıcı engelleme işlemi başarıyla gerçekleşti.");
+                                row.remove();
+                            },
+                            error: function () {
+                                toastr.error("Kullanıcı engelleme işlemi sırasında bir hata oluştu.");
+                            }
+                        });
+                    }
+                });
+        });
+    });
+</script>

@@ -1,0 +1,27 @@
+﻿@model List<UserAdmin>
+
+@{
+    ViewData["Title"] = "DeleteUserList";
+}
+
+
+<table class="table table-bordered table table-striped">
+    <tr>
+        <th>Adı-Soyadı</th>
+        <th>Kullanıcı Adı</th>
+        <th>Email</th>
+        <th>Aktif Et</th>
+    </tr>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th>@item.FullName</th>
+                <td>@item.UserName</td>
+                <td>@item.Email</td>
+                <td><a class="btn btn-success" asp-action="UsersActive" asp-route-id="@item.Id">Kullanıcıyı Aktif Yap</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
