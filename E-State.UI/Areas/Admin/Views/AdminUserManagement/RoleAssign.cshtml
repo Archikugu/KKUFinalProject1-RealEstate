@@ -1,0 +1,20 @@
+﻿@model List<AssignRoleViewModel>
+
+@{
+    ViewData["Title"] = "RoleAssign";
+}
+
+<h1>@ViewBag.fullname için Rol Ata</h1>
+
+<form method="post" asp-action="RoleAssign" asp-antiforgery="true">
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <div class="form-check">
+            <input asp-for="@Model[i].Exist" class="form-check-input" type="checkbox" />
+            <label asp-for="@Model[i].Id" class="form-check-label">@Model[i].Name</label>
+            <input asp-for="@Model[i].Id" type="hidden" />
+            <input asp-for="@Model[i].Name" type="hidden" />
+        </div>
+    }
+    <button type="submit" class="btn btn-primary">Rol Ata</button>
+</form>

@@ -1,4 +1,5 @@
 ﻿using E_State.Entities.Entities;
+using E_State.UI.Areas.Admin.Models;
 using E_State.UI.Areas.User.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -93,5 +94,57 @@ namespace E_State.UI.Areas.Admin.Controllers
             await _userManager.UpdateAsync(user);
             return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> RoleAssign(string id)
+        {
+            UserAdmin user = await _userManager.FindByIdAsync(id);
+            TempData["userId"] = id;
+
+            ViewBag.fullname = user.FullName;
+            IQueryable<IdentityRole> roles = _roleManager.Roles;
+
+            List<string> userRoles = await _userManager.GetRolesAsync(user) as List<string>;
+            List<AssignRoleViewModel> assignRoleViewModels = new List<AssignRoleViewModel>();
+
+            foreach (var role in roles)
+            {
+                AssignRoleViewModel roleModel = new AssignRoleViewModel();
+                if (userRoles.Contains(role.Name))
+                {
+                    roleModel.Id = role.Id;
+                    roleModel.Name = role.Name;
+                    roleModel.Exist = true;
+                }
+                else
+                {
+                    roleModel.Id = role.Id;
+                    roleModel.Name = role.Name;
+                    roleModel.Exist = false;
+                }
+                assignRoleViewModels.Add(roleModel);
+            }
+            return View(assignRoleViewModels);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RoleAssign(List<AssignRoleViewModel> assignRoleViewModels)
+        {
+            UserAdmin user = await _userManager.FindByIdAsync(TempData["userId"].ToString());
+            foreach (var item in assignRoleViewModels)
+            {
+                if (item.Exist)
+                {
+                    await _userManager.AddToRoleAsync(user, item.Name);
+                }
+                else
+                {
+                    await _userManager.RemoveFromRoleAsync(user, item.Name);
+                }
+            }
+            return RedirectToAction("Index");
+
+        }
+
     }
 }
